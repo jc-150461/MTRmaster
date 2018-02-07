@@ -59,11 +59,6 @@ namespace MuscleTrainingRecords00
 
         }
 
-        /* protected override void OnAppearing()
-         {
-             DisplayAlert("id", ReModelv2.key+" " + ReModelv2.name +" "+ReModelv2.date, "OK");
-         }*/
-
 
         //引っ張ったとき（更新）
         private async void OnRefreshing(object sender, EventArgs e)
@@ -80,12 +75,18 @@ namespace MuscleTrainingRecords00
 
         }
 
-        private void addItemButton_Clicked(object sender, EventArgs e)
+        private async Task addItemButton_Clicked(object sender, EventArgs e)
         {
-
-            if (Weight.Text == null || Reps.Text == null || Set.Text == null)
+            try
             {
-                DisplayAlert("", "入力が不足しています", "OK");
+                if (Weight.Text == null || Reps.Text == null || Set.Text == null)
+                {
+                    DisplayAlert("", "入力が不足しています", "OK");
+                }
+            }
+            catch (Exception)
+            {
+                DisplayAlert("", "入力してください", "OK");
             }
 
             int WeightText = int.Parse(Weight.Text);
@@ -93,11 +94,22 @@ namespace MuscleTrainingRecords00
             int SetText = int.Parse(Set.Text);
 
 
-            DateTime now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            string date = now.ToString("yyyy/MM/dd");
+            bool result = await DisplayAlert("保存", WeightText+"kg "+RepsText+"回数　"+SetText+"セット を保存しますか", "OK", "キャンセル");
 
-            RecordModelv2.InsertRe(t, x, WeightText, RepsText, SetText, date);
-            //RecordModelv2.InsertRe(0, "データ", 0, 0, 0, now);
+            if (result == true)
+            {
+                DateTime now = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
+                string date = now.ToString("yyyy/MM/dd");
+
+                RecordModelv2.InsertRe(t, x, WeightText, RepsText, SetText, date);
+
+
+                InitializeComponent();
+
+                m_name.Text = x;
+
+            }
+
         }
 
         private async Task list_ItemTapped(object sender, ItemTappedEventArgs e)
