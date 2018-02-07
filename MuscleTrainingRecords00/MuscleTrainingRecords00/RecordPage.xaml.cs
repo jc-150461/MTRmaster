@@ -116,6 +116,7 @@ namespace MuscleTrainingRecords00
 
                 RecordModelv2.DeleteRecords(M_no);
 
+
                 InitializeComponent();
 
                 m_name.Text = x;
